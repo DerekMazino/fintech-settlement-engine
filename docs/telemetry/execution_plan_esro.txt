@@ -1,0 +1,74 @@
+
+Session altered.
+
+
+5000 rows created.
+
+Elapsed: 00:00:00.73
+
+Commit complete.
+
+Elapsed: 00:00:00.02
+INSERT /*+ APPEND */ INTO transacciones_staging (trx_id, cliente_id, monto_compra, fecha_trx, categoria, estado_proc)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (FINTECH_USER.PK_TRANSACCIONES_STAGING) violated
+on table FINTECH_USER.TRANSACCIONES_STAGING columns (TRX_ID)
+ORA-03301: (ORA-00001 details) row with column values (TRX_ID:8888) already
+exists
+Help: https://docs.oracle.com/error-help/db/ora-00001/
+
+
+Elapsed: 00:00:01.45
+
+Commit complete.
+
+Elapsed: 00:00:00.01
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.47
+
+Session altered.
+
+Elapsed: 00:00:00.06
+
+CATEGORIA	     TOTAL_OPERACIONES VOLUMEN_TOTAL
+-------------------- ----------------- -------------
+RETAIL				     1	      200000
+
+Elapsed: 00:00:00.32
+
+PLAN_TABLE_OUTPUT
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL_ID	63szvmq2ux5xu, child number 0
+-------------------------------------
+SELECT categoria,	 COUNT(*) AS total_operaciones,
+SUM(monto_compra) AS volumen_total   FROM transacciones_staging  WHERE
+estado_proc = 'LIQUIDADO'    AND fecha_trx >= TO_DATE('2026-10-01',
+'YYYY-MM-DD')	 AND fecha_trx < TO_DATE('2026-11-01', 'YYYY-MM-DD')
+GROUP BY categoria
+
+Plan hash value: 4080755937
+
+-------------------------------------------------------------------------------------------------------
+| Id  | Operation	     | Name		    | Starts | E-Rows | A-Rows |   A-Time   | Buffers |
+-------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT     |			    |	   1 |	      |      1 |00:00:00.01 |	   67 |
+|   1 |  SORT GROUP BY NOSORT|			    |	   1 |	    1 |      1 |00:00:00.01 |	   67 |
+|*  2 |   INDEX RANGE SCAN   | IDX_TRX_RIESGOS_ESRO |	   1 |	    1 |      1 |00:00:00.01 |	   67 |
+-------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   2 - access("ESTADO_PROC"='LIQUIDADO' AND "FECHA_TRX">=TO_DATE(' 2026-10-01 00:00:00',
+	      'syyyy-mm-dd hh24:mi:ss') AND "FECHA_TRX"<TO_DATE(' 2026-11-01 00:00:00', 'syyyy-mm-dd
+	      hh24:mi:ss'))
+       filter(("FECHA_TRX">=TO_DATE(' 2026-10-01 00:00:00', 'syyyy-mm-dd hh24:mi:ss') AND
+	      "FECHA_TRX"<TO_DATE(' 2026-11-01 00:00:00', 'syyyy-mm-dd hh24:mi:ss')))
+
+
+27 rows selected.
+
+Elapsed: 00:00:01.33
