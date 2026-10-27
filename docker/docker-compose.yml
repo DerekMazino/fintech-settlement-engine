@@ -1,0 +1,15 @@
+services:
+  oracle-db:
+    image: gvenzl/oracle-free:23-slim
+    container_name: oracle-23ai-fintech
+    ports:
+      - "1521:1521"
+    environment:
+      - ORACLE_PASSWORD=Fintech2026!
+      - APP_USER=FINTECH_USER
+      - APP_USER_PASSWORD=FintechMaster2026!
+    volumes:
+      - ./oradata:/opt/oracle/oradata
+      - ./init:/container-entrypoint-initdb.d
+      - ../src:/opt/oracle/src
+    restart: unless-stopped

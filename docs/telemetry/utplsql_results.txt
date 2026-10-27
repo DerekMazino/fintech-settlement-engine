@@ -1,0 +1,25 @@
+Suite de pruebas liquidación y cashback
+Verificar que cliente ORO con compra de 100,000 recibe 5,000 de cashback [.195
+sec]
+Verificar que cliente BRONCE con compra de 50,000 recibe 500 de cashback [.013
+sec]
+Procesamiento de lote diario liquida transacciones pendientes y actualiza saldo
+[.294 sec]
+Warnings:
+1) test_pkg_liquidacion.test_proceso_lote_diario
+Unable to perform automatic rollback after test. An implicit or explicit
+commit/rollback occurred in procedures:
+fintech_user.test_pkg_liquidacion.test_proceso_lote_diario
+Use the "--%rollback(manual)" annotation or remove commit/rollback/ddl
+statements that are causing the issue.
+2) test_pkg_liquidacion
+Unable to perform automatic rollback after test suite. An implicit or explicit
+commit/rollback occurred in procedures:
+fintech_user.test_pkg_liquidacion.test_proceso_lote_diario
+Use the "--%rollback(manual)" annotation or remove commit/rollback/ddl
+statements that are causing the issue.
+Finished in .532208 seconds
+3 tests, 0 failed, 0 errored, 0 disabled, 2 warning(s)
+
+PL/SQL procedure successfully completed.
+
