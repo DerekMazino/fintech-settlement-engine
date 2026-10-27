@@ -92,7 +92,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_liquidacion_core AS
                         , mensaje_error
                         , fecha_registro
                         ) VALUES 
-                        ( v_pendientes(i).trx_id
+                        ( v_pendientes(vl_error_idx).trx_id
                         , vl_error_code
                         , vl_error_msj
                         , SYSDATE
@@ -123,8 +123,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_liquidacion_core AS
             IF v_rechazados.COUNT > 0 THEN
                 FORALL i IN 1..v_rechazados.COUNT
                     UPDATE transacciones_staging
-                    SET    estado_proc = 'RECAHZADO'
-                    WHERE  trx_id = v_liquidados(i);
+                    SET    estado_proc = 'RECHAZADO'
+                    WHERE  trx_id = v_rechazados(i);
                 FORALL i IN 1..v_rechazados.COUNT
                     INSERT INTO log_liquidacion_errores
                     ( trx_id
@@ -202,7 +202,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_liquidacion_core AS
             ,      categoria
             ,      estado_proc
             FROM transacciones_staging
-            WHERE TRUNC(fecha_trx) = TRUNC(p_fecha)
+            WHERE fecha_trx >= TRUNC(p_fecha)
+            AND fecha_trx   <  TRUNC(p_fecha) + 1
             AND estado_proc = p_estado
             ORDER BY trx_id ASC;
 
